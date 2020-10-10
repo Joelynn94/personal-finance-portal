@@ -24,6 +24,9 @@ app.get('/', (req, res) => {
   res.json({ message: 'basic server is setup' })
 })
 
+// require the routes
+require('./app/routes/debt.routes')(app)
+
 db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and re-sync db.')
 })

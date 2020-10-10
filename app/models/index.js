@@ -1,19 +1,17 @@
 'use strict'
 
-const dbConfig = require('../config/db.config.js')
+const dbConfig = require('../../config/config.json')
 
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle,
-  },
-})
+const sequelize = new Sequelize(
+  dbConfig.database,
+  dbConfig.username,
+  dbConfig.password,
+  {
+    host: dbConfig.host,
+    dialect: 'mysql',
+  }
+)
 
 const db = {}
 

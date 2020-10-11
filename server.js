@@ -2,6 +2,8 @@ const dotenv = require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 
+const db = require('./db')
+
 const corsOptions = {
   origin: 'http://localhost:8080',
 }
@@ -19,11 +21,23 @@ app.use(cors(corsOptions))
 app.use(express.static('public'))
 
 // get all debts
-app.get('/api/v1/debts', (req, res) => {
-  res.status(200).json({
-    status: "success",
-    debt: ['Student Loan', 'Auto Loan']
-  })
+app.get('/api/v1/debts', async (req, res) => {
+  const data = await db.query("SELECT * FROM debt")
+  console.log(data)
+
+  try {
+  
+    res.status(200).json({
+      status: "success",
+      results: data.rows.length,
+      debts: data.rows 
+    })
+  } catch (error) {
+    res.status(500).json({
+      status: "Not a good request"
+    })
+  }
+
 })
 
 // get one debt by id

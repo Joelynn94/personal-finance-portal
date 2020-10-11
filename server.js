@@ -22,7 +22,8 @@ app.use(express.static('public'))
 
 // get all debts
 app.get('/api/v1/debts', async (req, res) => {
-  const data = await db.query("SELECT * FROM debt")
+  const data = await 
+    db.query("SELECT * FROM debt")
   console.log(data)
 
   try {
@@ -40,7 +41,8 @@ app.get('/api/v1/debts', async (req, res) => {
 
 // get one debt by id
 app.get('/api/v1/debts/:id', async (req, res) => {
-  const data = await db.query('SELECT * FROM debt WHERE debt_id = $1', [req.params.id])
+  const data = await 
+    db.query('SELECT * FROM debt WHERE debt_id = $1', [req.params.id])
   console.log(data.rows[0])
 
   try {
@@ -95,13 +97,29 @@ app.put('/api/v1/debts/:id', async (req, res) => {
   }
 })
 
-app.delete('/api/v1/debts/:id', (req, res) => {
-  console.log(req.params.id)
-  console.log(req.body)
+// Delete a debt by id
+app.delete('/api/v1/debts/:id', async (req, res) => {
+  const data = await 
+    db.query('DELETE FROM debt WHERE debt_id = $1 returning *', 
+    [req.params.id])
+  console.log(data)
 
-  res.status(204).json({
-    status: "success"
-  })
+  const allDebts = await 
+    db.query("SELECT * FROM debt")
+  console.log(allDebts)
+
+    try {
+      res.status(204).json({
+        status: "success",
+        results: allDebts.rows.length,
+        debts: allDebts.rows 
+      })
+    } catch (error) {
+      res.status(500).json({
+        status: error
+      })
+    }
+
 })
 
 // listen for requests

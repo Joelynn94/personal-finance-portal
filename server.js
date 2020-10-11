@@ -33,7 +33,7 @@ app.get('/api/v1/debts', async (req, res) => {
     })
   } catch (error) {
     res.status(500).json({
-      status: "Not a good request"
+      status: error
     })
   }
 })
@@ -46,34 +46,53 @@ app.get('/api/v1/debts/:id', async (req, res) => {
   try {
     res.status(200).json({
       status: "success",
-      debts: data.rows[0]
+      debt: data.rows[0]
     })
   } catch (error) {
     res.status(500).json({
-      status: "Not a good request"
+      status: error
     })
   }
 })
 
 // post a new debt
-app.post('/api/v1/debts', (req, res) => {
-  console.log(req.body)
+app.post('/api/v1/debts', async (req, res) => {
+  const data = await 
+    db.query('INSERT INTO debt (balance, min_payment, interest, account_type) VALUES ($1, $2, $3, $4) returning *', 
+    [req.body.balance, req.body.min_payment, req.body.interest, req.body.account_type])
+  console.log(data)
 
-  res.status(201).json({
-    status: "success",
-    debt: ['Student Loan', 'Auto Loan']
-  })
+  try {
+    res.status(201).json({
+      status: "success",
+      debt: data.rows[0]
+    })
+  } catch (error) {
+    res.status(500).json({
+      status: error
+    })
+  }
+
+
 })
 
-// update a deby by id
-app.put('/api/v1/debts/:id', (req, res) => {
-  console.log(req.params.id)
-  console.log(req.body)
+// update a debt by id
+app.put('/api/v1/debts/:id', async (req, res) => {
+  const data = await 
+    db.query('UPDATE debt SET balance = $1, min_payment = $2, interest = $3, account_type = $4 WHERE debt_id = $5 returning *', 
+    [req.body.balance, req.body.min_payment, req.body.interest, req.body.account_type, req.params.id])
+  console.log(data)
 
-  res.status(200).json({
-    status: "success",
-    debt: ['Student Loan', 'Auto Loan']
-  })
+  try {
+    res.status(200).json({
+      status: "success",
+      debt: data.rows[0]
+    })
+  } catch (error) {
+    res.status(500).json({
+      status: error
+    })
+  }
 })
 
 app.delete('/api/v1/debts/:id', (req, res) => {

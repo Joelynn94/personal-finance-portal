@@ -26,7 +26,6 @@ app.get('/api/v1/debts', async (req, res) => {
   console.log(data)
 
   try {
-  
     res.status(200).json({
       status: "success",
       results: data.rows.length,
@@ -37,17 +36,23 @@ app.get('/api/v1/debts', async (req, res) => {
       status: "Not a good request"
     })
   }
-
 })
 
 // get one debt by id
-app.get('/api/v1/debts/:id', (req, res) => {
-  console.log(req.params.id)
+app.get('/api/v1/debts/:id', async (req, res) => {
+  const data = await db.query('SELECT * FROM debt WHERE debt_id = $1', [req.params.id])
+  console.log(data.rows[0])
 
-  res.status(200).json({
-    status: "success",
-    debt: ['Student Loan', 'Auto Loan']
-  })
+  try {
+    res.status(200).json({
+      status: "success",
+      debts: data.rows[0]
+    })
+  } catch (error) {
+    res.status(500).json({
+      status: "Not a good request"
+    })
+  }
 })
 
 // post a new debt

@@ -4,7 +4,7 @@ const router = express.Router()
 const db = require('../db')
 
 // get all debts
-router.get('/api/debts', async (req, res) => {
+router.get('/debts', async (req, res) => {
   const data = await 
     db.query("SELECT * FROM debt")
   console.log(data)
@@ -12,10 +12,11 @@ router.get('/api/debts', async (req, res) => {
   try {
     res.status(200).json({
       status: "success",
-      results: data.rows.length,
-      debts: data.rows 
+      data: {
+        results: data.rows.length,
+        debts: data.rows 
+      }
     })
-    res.render('debts', {debts_data: data.rows})
   } catch (error) {
     res.status(500).json({
       status: error
@@ -24,18 +25,19 @@ router.get('/api/debts', async (req, res) => {
 })
 
 // post a new debt
-router.post('/api/debts', async (req, res) => {
+router.post('/debts', async (req, res) => {
   const data = await 
-    db.query('INSERT INTO debt (balance, min_payment, interest, account_type) VALUES ($1, $2, $3, $4) returning *', 
+    db.query('INSERT INTO debt (balance, min_payment, interest, account_type) VALUES ($1, $2, $3, $4) RETURNING *', 
     [req.body.balance, req.body.min_payment, req.body.interest, req.body.account_type])
   console.log(data)
 
   try {
     res.status(201).json({
       status: "success",
-      debt: data.rows[0]
+      data: {
+        debt: data.rows[0]
+      }
     })
-    res.render('debts', {debts_data: data.rows})
   } catch (error) {
     res.status(500).json({
       status: error
@@ -44,7 +46,7 @@ router.post('/api/debts', async (req, res) => {
 })
 
 // get one debt by id
-router.get('api/debts/:id', async (req, res) => {
+router.get('/debts/:id', async (req, res) => {
   const data = await 
     db.query('SELECT * FROM debt WHERE debt_id = $1', [req.params.id])
   console.log(data.rows[0])
@@ -52,9 +54,10 @@ router.get('api/debts/:id', async (req, res) => {
   try {
     res.status(200).json({
       status: "success",
-      debt: data.rows[0]
+      data: {
+        debt: data.rows[0]
+      }
     })
-    res.render('debts', {debts_data: data.rows})
   } catch (error) {
     res.status(500).json({
       status: error
@@ -63,18 +66,19 @@ router.get('api/debts/:id', async (req, res) => {
 })
 
 // update a debt by id
-router.put('api/debts/:id', async (req, res) => {
+router.put('/debts/:id', async (req, res) => {
   const data = await 
-    db.query('UPDATE debt SET balance = $1, min_payment = $2, interest = $3, account_type = $4 WHERE debt_id = $5 returning *', 
+    db.query('UPDATE debt SET balance = $1, min_payment = $2, interest = $3, account_type = $4 WHERE debt_id = $5 RETURNING *', 
     [req.body.balance, req.body.min_payment, req.body.interest, req.body.account_type, req.params.id])
   console.log(data)
 
   try {
     res.status(200).json({
       status: "success",
-      debt: data.rows[0]
+      data: {
+        debt: data.rows[0]
+      }
     })
-    res.render('debts', {debts_data: data.rows})
   } catch (error) {
     res.status(500).json({
       status: error
@@ -83,9 +87,9 @@ router.put('api/debts/:id', async (req, res) => {
 })
 
 // Delete a debt by id
-router.delete('api/debts/:id', async (req, res) => {
+router.delete('/debts/:id', async (req, res) => {
   const data = await 
-    db.query('DELETE FROM debt WHERE debt_id = $1 returning *', 
+    db.query('DELETE FROM debt WHERE debt_id = $1 RETURNING *', 
     [req.params.id])
   console.log(data)
 
@@ -96,10 +100,11 @@ router.delete('api/debts/:id', async (req, res) => {
     try {
       res.status(204).json({
         status: "success",
-        results: allDebts.rows.length,
-        debts: allDebts.rows 
+        data: {
+          results: allDebts.rows.length,
+          debts: allDebts.rows
+        }
       })
-      res.render('debts', {debts_data: data.rows})
     } catch (error) {
       res.status(500).json({
         status: error

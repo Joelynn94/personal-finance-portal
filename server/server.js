@@ -5,7 +5,7 @@ const cors = require('cors')
 const corsOptions = {
   origin: 'http://localhost:8080',
 }
-const debtController = require('./controller/debts')
+const debtsController = require('./controller/debts')
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -18,21 +18,10 @@ app.use(express.json())
 app.use(cors(corsOptions))
 // use static files
 app.use(express.static('public'))
-// use the api debtController
-app.use(debtController)
 
-// use EJS as the templating engine 
-app.set('view engine', 'ejs')
+// use the api debtsController
+app.use('/api/v1', debtsController)
 
-// get index route
-app.get('/', async (req, res) => {
-  res.render('index')
-})
-
-// get debts route
-app.get('/debts', async (req, res) => {
-  res.render('debts')
-})
 
 // listen for requests
 app.listen(PORT, () => {

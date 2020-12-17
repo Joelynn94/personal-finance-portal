@@ -1,22 +1,18 @@
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import DebtsContextProvider from "./context/DebtsContext"
+import Dashboard from "./routes/Dashboard"
+import DebtCalculator from "./routes/DebtCalculator"
 
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DebtsContextProvider>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/debts" component={DebtCalculator} />
+        </Switch>
+      </Router>
+    </DebtsContextProvider>
   );
 }
 

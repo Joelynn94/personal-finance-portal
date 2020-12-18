@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import DebtFinder from "../APIs/DebtFinder"
+import { DebtsContext } from '../context/DebtsContext'
 
 const AddDebt = () => {
+  const {addDebts} = useContext(DebtsContext)
   const [balance, setBalance] = useState("")
   const [minPayment, setMinPayment] = useState("")
   const [interestRate, setInterestRate] = useState("")
@@ -16,6 +18,7 @@ const AddDebt = () => {
         interest: interestRate,
         account_type: accountType
       })
+      addDebts(response.data.debt)
       console.log(response)
     } catch (error) {
       console.error(error)

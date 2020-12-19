@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import DebtsContextProvider from "./context/DebtsContext"
 import Dashboard from "./routes/Dashboard"
 import DebtCalculator from "./routes/DebtCalculator"
-import UpdateDebt from "./routes/UpdateDebt"
+import UpdateDebtPage from "./routes/UpdateDebtPage"
 
 const App = () => {
   return (
@@ -11,7 +11,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route exact path="/debts" component={DebtCalculator} />
-          <Route exact path="/debts/:id/update" component={UpdateDebt} />
+          <Route exact path="/debts/:id/update" component={UpdateDebtPage} />
         </Switch>
       </Router>
     </DebtsContextProvider>

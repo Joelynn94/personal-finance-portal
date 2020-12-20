@@ -22,7 +22,7 @@ const UpdateDebt = () => {
     }
 
     fetchData()
-  }, [])
+  }, [id])
 
   return (
     <div>

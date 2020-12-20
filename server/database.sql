@@ -1,19 +1,21 @@
 DROP TABLE IF EXISTS account;
 CREATE TABLE account
 (
-  account_id SERIAL PRIMARY KEY,
-  account_name VARCHAR(50) NOT NULL CHECK(account_name <> '')
+  account_id SERIAL NOT NULL PRIMARY KEY,
+  account_name VARCHAR(50) NOT NULL CHECK(account_name <> ''),
+  account_type VARCHAR(50) NOT NULL CHECK(account_name <> '')
 );
 
 DROP TABLE IF EXISTS debt;
 CREATE TABLE debt
 (
-  debt_id SERIAL PRIMARY KEY,
+  debt_id SERIAL NOT NULL PRIMARY KEY,
+  interest_rate DECIMAL (5, 2) NOT NULL CHECK(interest_rate >= 0),
   balance NUMERIC(10, 2) NOT NULL CHECK(balance > 0),
-  min_payment NUMERIC (10, 2) CHECK(min_payment > 0),
-  interest NUMERIC (5, 2) NOT NULL CHECK(interest >= 0),
+  min_payment NUMERIC (10, 2) NOT NULL CHECK(min_payment > 0),
+  debt_type VARCHAR(50) NOT NULL CHECK(debt_type <> ''),
+  account_name VARCHAR(50) CHECK(account_name <> ''),
   est_payoff_date DATE,
-  account_type INT NOT NULL REFERENCES account(account_id)
 );
 
 INSERT INTO account
@@ -48,31 +50,36 @@ VALUES
 
 
 INSERT INTO debt
-  (balance, min_payment, interest, account_type)
+  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
 VALUES
-  (10000, 300, 5, 1);
+  (10000, .05, 200, "Student Loan", "Loan for Harvard University", null);
 
 INSERT INTO debt
-  (balance, min_payment, interest, account_type)
+  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
 VALUES
-  (20000, 400, 8, 2);
+  (20000, .08, 400, "Auto Loan", "Wife's car", null);
 
 INSERT INTO debt
-  (balance, min_payment, interest, account_type)
+  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
 VALUES
-  (5000, 300, 10, 3);
+  (25000, .07, 500, "Auto Loan", "My truck", null);
 
 INSERT INTO debt
-  (balance, min_payment, interest, account_type)
+  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
 VALUES
-  (15000, 150, 20, 4);
+  (5000, .13, 200, "Personal Loan", " ", null);
 
 INSERT INTO debt
-  (balance, min_payment, interest, account_type)
+  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
 VALUES
-  (200000, 1200, 4, 5);
+  (1500, .20, 50, "Credit Card", "Capital One", null);
 
 INSERT INTO debt
-  (balance, min_payment, interest, account_type)
+  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
 VALUES
-  (8000, 200, 5, 6);
+  (150000, .05, 1000, "Mortgage", "Our house", null);
+
+INSERT INTO debt
+  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
+VALUES
+  (10000, .10, 150, "Medical", "Sugery", null);

@@ -1,12 +1,13 @@
-const dotenv = require('dotenv')
-const express = require('express')
-const cors = require('cors')
-const connectDB = require('./config/connection')
+import dotenv from 'dotenv'
+import express from 'express'
+import cors from 'cors'
+import connectDB from './config/connection.js'
 
 dotenv.config()
 connectDB()
 
-const debtsController = require('./controller/debts')
+import debtsController from './controller/debts.js'
+import debtRoutes from './routes/debtRoutes.js'
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -20,6 +21,8 @@ app.use(cors())
 // use static files
 app.use(express.static('public'))
 
+// use the api routes 
+app.use('/api/v1/', debtRoutes)
 // use the api debtsController
 app.use('/api/v1', debtsController)
 

@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose"
+import mongoose from "mongoose"
 
-const debtSchema = Schema({
+const debtSchema = mongoose.Schema({
   // user: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   required: true,
@@ -33,6 +33,6 @@ const debtSchema = Schema({
   timestamps: true
 })
 
-const Debt = model('Debt', debtSchema)
+const Debt = mongoose.model('Debt', debtSchema)
 
-module.exports = Debt
+export default Debt

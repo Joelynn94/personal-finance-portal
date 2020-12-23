@@ -1,6 +1,8 @@
-const dotenv = require('dotenv').config()
+const dotenv = require('dotenv')
 const express = require('express')
 const cors = require('cors')
+
+dotenv.config()
 
 const debtsController = require('./controller/debts')
 
@@ -19,8 +21,7 @@ app.use(express.static('public'))
 // use the api debtsController
 app.use('/api/v1', debtsController)
 
-
 // listen for requests
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
+  console.log(`Server is running in ${process.env.NODE_ENV} on port ${PORT}`)
 })

@@ -1,11 +1,13 @@
-const dotenv = require('dotenv').config()
-const express = require('express')
-const cors = require('cors')
+import dotenv from 'dotenv'
+import express from 'express'
+import cors from 'cors'
+import connectDB from './config/connection.js'
 
-// const corsOptions = {
-//   origin: 'http://localhost:3001/api/v1/debts',
-// }
-const debtsController = require('./controller/debts')
+dotenv.config()
+connectDB()
+
+import debtsController from './controller/debts.js'
+import debtRoutes from './routes/debtRoutes.js'
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -19,11 +21,13 @@ app.use(cors())
 // use static files
 app.use(express.static('public'))
 
+// use the api routes 
+app.use('/api/v1/', debtRoutes)
 // use the api debtsController
 app.use('/api/v1', debtsController)
 
 
 // listen for requests
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
+  console.log(`Server is running in ${process.env.NODE_ENV} on port ${PORT}`)
 })

@@ -1,7 +1,7 @@
-import express from 'express'
+const express = require('express')
 const router = express.Router()
 
-import db from '../db/index.js'
+const db = require('../db')
 
 // get all debts
 router.get('/debts', async (req, res) => {
@@ -96,4 +96,4 @@ router.delete('/debts/:id', async (req, res) => {
     }
 })
 
-export default router
+module.exports = router

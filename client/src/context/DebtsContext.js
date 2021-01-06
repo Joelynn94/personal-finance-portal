@@ -10,7 +10,7 @@ const DebtsContextProvider = (props) => {
   }
 
   return (
-    <DebtsContext.Provider value={{ debts, setDebts, addDebts }}>
+    <DebtsContext.Provider value={{...debts, setDebts, addDebts }}>
       {props.children}
     </DebtsContext.Provider>
   )

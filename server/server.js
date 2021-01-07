@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 const debtRoutes = require('./routes/debtRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ app.use(express.static('public'));
 
 // use the api debtRoutes
 app.use('/api/v1', debtRoutes);
+// use the api userRoutes
+app.use('/api/v1/users', userRoutes);
 
 // listen for requests
 app.listen(PORT, () => {

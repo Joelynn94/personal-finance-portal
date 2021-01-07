@@ -1,70 +1,40 @@
-INSERT INTO account
-  (account_name)
+INSERT INTO users
+  (user_name, user_email, user_password, isAdmin)
 VALUES
-  ('Student Loan');
-
-INSERT INTO account
-  (account_name)
-VALUES
-  ('Auto Loan');
-
-INSERT INTO account
-  (account_name)
-VALUES
-  ('Personal Loan');
-
-INSERT INTO account
-  (account_name)
-VALUES
-  ('Credit Card');
-
-INSERT INTO account
-  (account_name)
-VALUES
-  ('Medical Bill');
-
-INSERT INTO account
-  (account_name)
-VALUES
-  ('Mortgage');
-
-INSERT INTO account
-  (account_name)
-VALUES
-  ('Other');
+  ('Joe Lynn', 'josephlynn@gmail.com', 'kite12345', true);
 
 
-INSERT INTO debt
-  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
+INSERT INTO debts
+  (balance, user_id, user_id, interest_rate, min_payment, debt_type, account_name)
 VALUES
-  (10000, .05, 200, 'Student Loan', 'Loan for Harvard University', null);
+  (10000, 1, 0.05, 200, 'Student Loan', 'Loan for Harvard University');
 
-INSERT INTO debt
-  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
+INSERT INTO debts
+  (balance, user_id, interest_rate, min_payment, debt_type, account_name)
 VALUES
-  (20000, .08, 400, 'Auto Loan', 'GMC Terrain', null);
+  (20000, 1, 0.08, 400, 'Auto Loan', 'Wife car');
 
-INSERT INTO debt
-  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
+INSERT INTO debts
+  (balance, user_id, interest_rate, min_payment, debt_type, account_name)
 VALUES
-  (25000, .07, 500, 'Auto Loan', 'My truck', null);
+  (25000, 1, 0.07, 500, 'Auto Loan', 'My truck');
 
-INSERT INTO debt
-  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
+INSERT INTO debts
+  (balance, user_id, interest_rate, min_payment, debt_type, account_name)
 VALUES
-  (5000, .13, 200, 'Personal Loan', ' ', null);
+  (5000, 1, 0.13, 200, 'Personal Loan', ' ');
 
-INSERT INTO debt
-  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
+INSERT INTO debts
+  (balance, user_id, interest_rate, min_payment, debt_type, account_name)
 VALUES
-  (1500, .20, 50, 'Credit Card', 'Capital One', null);
+  (1500, 1, 0.20, 50, 'Credit Card', 'Capital One');
 
-INSERT INTO debt
-  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
+INSERT INTO debts
+  (balance, user_id, interest_rate, min_payment, debt_type, account_name)
 VALUES
-  (150000, .05, 1000, 'Mortgage', 'Our house', null);
+  (150000, 1, 0.05, 1000, 'Mortgage', 'Our house');
 
-INSERT INTO debt
-  (balance, interest_rate, min_payment, debt_type, account_name, est_payoff_date)
+INSERT INTO debts
+  (balance, user_id, interest_rate, min_payment, debt_type, account_name)
 VALUES
-  (10000, .10, 150, 'Medical', 'Sugery', null);
+  (10000, 1, 0.10, 150, 'Medical', 'Sugery');

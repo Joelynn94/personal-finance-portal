@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
 const db = require('../db');
 
 /**
@@ -38,13 +35,21 @@ const createDebt = async (req, res) => {
   const createNewQuery =
     'INSERT INTO debts (balance, interest_rate, min_payment, debt_type, account_name) VALUES ($1, $2, $3, $4, $5) RETURNING *';
 
+  // destructure from the req.body
+  const {
+    balance,
+    interest_rate,
+    min_payment,
+    debt_type,
+    account_name,
+  } = req.body;
   // values to use to create new data in the database
   const postParams = [
-    req.body.balance,
-    req.body.interest_rate,
-    req.body.min_payment,
-    req.body.debt_type,
-    req.body.account_name,
+    balance,
+    interest_rate,
+    min_payment,
+    debt_type,
+    account_name,
   ];
 
   try {
@@ -107,13 +112,21 @@ const updateDeptById = async (req, res) => {
   const updateByIdQuery =
     'UPDATE debts SET balance = $1, interest_rate = $2, min_payment = $3, debt_type = $4, account_name = $5 WHERE debt_id = $6 RETURNING *';
 
+  // desctructre from the req.body
+  const {
+    balance,
+    interest_rate,
+    min_payment,
+    debt_type,
+    account_name,
+  } = req.body;
   // values to use for the database query
   const findParams = [
-    req.body.balance || rows[0].balance,
-    req.body.interest_rate || rows[0].interest_rate,
-    req.body.min_payment || rows[0].min_payment,
-    req.body.debt_type || rows[0].debt_type,
-    req.body.account_name || rows[0].account_name,
+    balance || rows[0].balance,
+    interest_rate || rows[0].interest_rate,
+    min_payment || rows[0].min_payment,
+    debt_type || rows[0].debt_type,
+    account_name || rows[0].account_name,
     req.params.id,
   ];
 
@@ -139,7 +152,6 @@ const updateDeptById = async (req, res) => {
     });
   }
 };
-router.put('/debts/:id', async (req, res) => {});
 
 /**
  * Delete A Debt by id

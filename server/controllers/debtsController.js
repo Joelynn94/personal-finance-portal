@@ -9,21 +9,23 @@ const db = require('../db');
  * @param {object} res
  * @returns {array} list of all debts
  */
-router.get('/debts', async (req, res) => {
-  const data = await db.query('SELECT * FROM debt');
+const getAllDebts = async (req, res) => {
+  // query to find all debts
+  const findAllQuery = 'SELECT * FROM debts';
 
   try {
+    const { rows } = await db.query(findAllQuery);
     res.status(200).json({
       status: 'success',
-      results: data.rows.length,
-      debts: data.rows,
+      results: rows.length,
+      debts: rows,
     });
   } catch (error) {
     res.status(500).json({
       status: error,
     });
   }
-});
+};
 
 /**
  * post a new debt
@@ -31,10 +33,10 @@ router.get('/debts', async (req, res) => {
  * @param {object} res
  * @returns {object} new dept
  */
-router.post('/debts', async (req, res) => {
+const createDebt = async (req, res) => {
   // query to create a new debt
-  const createNew =
-    'INSERT INTO debt (balance, interest_rate, min_payment, debt_type, account_name) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+  const createNewQuery =
+    'INSERT INTO debts (balance, interest_rate, min_payment, debt_type, account_name) VALUES ($1, $2, $3, $4, $5) RETURNING *';
 
   // values to use to create new data in the database
   const postParams = [
@@ -47,7 +49,7 @@ router.post('/debts', async (req, res) => {
 
   try {
     // pull the rows data out of the {data} object and query it
-    const { rows } = await db.query(createNew, postParams);
+    const { rows } = await db.query(createNewQuery, postParams);
 
     // if the data was created - send the new data back
     res.status(201).json({
@@ -59,7 +61,7 @@ router.post('/debts', async (req, res) => {
       status: error,
     });
   }
-});
+};
 
 /**
  * get one debt by id
@@ -67,13 +69,13 @@ router.post('/debts', async (req, res) => {
  * @param {object} res
  * @returns {object} get one debt
  */
-router.get('/debts/:id', async (req, res) => {
+const getDebtById = async (req, res) => {
   // query to find the debt
-  const getOneById = 'SELECT * FROM debt WHERE debt_id = $1';
+  const getOneByIdQuery = 'SELECT * FROM debts WHERE debt_id = $1';
 
   try {
     // pull the rows data out of the {data} object and query it
-    const { rows } = await db.query(getOneById, [req.params.id]);
+    const { rows } = await db.query(getOneByIdQuery, [req.params.id]);
     // if the data is empty
     if (!rows[0]) {
       // return an error
@@ -82,7 +84,7 @@ router.get('/debts/:id', async (req, res) => {
       });
       // if there is data - return the data
     } else {
-      res.status(200).send({
+      res.status(200).json({
         status: 'success',
         debt: rows[0],
       });
@@ -92,7 +94,7 @@ router.get('/debts/:id', async (req, res) => {
       status: error,
     });
   }
-});
+};
 
 /**
  * Update a debt by id
@@ -100,10 +102,10 @@ router.get('/debts/:id', async (req, res) => {
  * @param {object} res
  * @returns {object} updated dept
  */
-router.put('/debts/:id', async (req, res) => {
+const updateDeptById = async (req, res) => {
   // query to update the debt
   const updateByIdQuery =
-    'UPDATE debt SET balance = $1, interest_rate = $2, min_payment = $3, debt_type = $4, account_name = $5 WHERE debt_id = $6 RETURNING *';
+    'UPDATE debts SET balance = $1, interest_rate = $2, min_payment = $3, debt_type = $4, account_name = $5 WHERE debt_id = $6 RETURNING *';
 
   // values to use for the database query
   const findParams = [
@@ -126,7 +128,7 @@ router.put('/debts/:id', async (req, res) => {
       });
       // if there is data - return the updated data
     } else {
-      res.status(200).send({
+      res.status(200).json({
         status: 'success',
         debt: rows[0],
       });
@@ -136,7 +138,8 @@ router.put('/debts/:id', async (req, res) => {
       status: `Failed to update this debt, ID ${req.params.id} does not exist`,
     });
   }
-});
+};
+router.put('/debts/:id', async (req, res) => {});
 
 /**
  * Delete A Debt by id
@@ -144,9 +147,9 @@ router.put('/debts/:id', async (req, res) => {
  * @param {object} res
  * @returns {void} return status code 204
  */
-router.delete('/debts/:id', async (req, res) => {
+const deleteDebt = async (req, res) => {
   // query to delete the debt
-  const deleteByIdQuery = 'DELETE FROM debt WHERE debt_id = $1 RETURNING *';
+  const deleteByIdQuery = 'DELETE FROM debts WHERE debt_id = $1 RETURNING *';
 
   try {
     // pull the rows data out of the {data} object and query it
@@ -168,6 +171,12 @@ router.delete('/debts/:id', async (req, res) => {
       status: error,
     });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  getAllDebts,
+  createDebt,
+  getDebtById,
+  updateDeptById,
+  deleteDebt,
+};

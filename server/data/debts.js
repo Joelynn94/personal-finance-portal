@@ -1,32 +1,32 @@
 const debts = [
   {
-    accountName: 'Discover loan',
-    debtType: "Personal loan",
-    interestRate: .13,
     balance: 5000,
-    minPayment: 150
+    interestRate: 0.13,
+    minPayment: 150,
+    debtType: 'Personal loan',
+    accountName: 'Discover loan',
   },
   {
-    accountName: 'GMC Terrain',
-    debtType: "Auto loan",
-    interestRate: .08,
     balance: 9000,
-    minPayment: 205
+    interestRate: 0.08,
+    minPayment: 205,
+    debtType: 'Auto loan',
+    accountName: 'GMC Terrain',
   },
   {
-    accountName: 'Lakeland cc',
-    debtType: "Student loan",
-    interestRate: .06,
     balance: 7000,
-    minPayment: 50
+    interestRate: 0.06,
+    minPayment: 50,
+    debtType: 'Student loan',
+    accountName: 'Lakeland cc',
   },
   {
-    accountName: 'Capital One',
-    debtType: "Credit card",
-    interestRate: .20,
     balance: 1500,
-    minPayment: 50
-  }
-]
+    interestRate: 0.2,
+    minPayment: 50,
+    debtType: 'Credit card',
+    accountName: 'Capital One',
+  },
+];
 
-export default debts
+export default debts;

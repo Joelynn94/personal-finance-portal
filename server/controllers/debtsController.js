@@ -122,11 +122,11 @@ const updateDeptById = async (req, res) => {
   } = req.body;
   // values to use for the database query
   const findParams = [
-    balance || rows[0].balance,
-    interest_rate || rows[0].interest_rate,
-    min_payment || rows[0].min_payment,
-    debt_type || rows[0].debt_type,
-    account_name || rows[0].account_name,
+    balance,
+    interest_rate,
+    min_payment,
+    debt_type,
+    account_name,
     req.params.id,
   ];
 

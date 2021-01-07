@@ -14,9 +14,9 @@ const authUser = async (req, res) => {
   const { name, email, password, isadmin } = req.body;
 
   try {
-    // // check if user exists
+    // queryy to check if user exists
     const user = await db.query(findUserByEmail, [email]);
-
+    // if the user already exists
     if (user.rows.length !== 0) {
       return res
         .status(401)

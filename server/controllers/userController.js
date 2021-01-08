@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const db = require('../db');
+const { check, validationResult } = require('express-validator');
 
 /**
  * get user
@@ -13,8 +14,25 @@ const authUser = async (req, res) => {
   // destructure from the req.body
   const { name, email, password, isadmin } = req.body;
 
+  await check('name', 'Please add a valid name that is not empty')
+    .not()
+    .isEmpty()
+    .run(req);
+  await check('email', 'Please enter a valid email address').isEmail().run(req);
+  await check('password', 'Password must be at least 6 characters in length')
+    .isLength({ min: 6 })
+    .run(req);
+  await check('isadmin', 'Not an admin').isBoolean().run(req);
+
+  const errors = validationResult(req);
+  // check is errors is empty
+  if (!errors.isEmpty()) {
+    // sends a status of 400 and sends json data that gives back an array of errors
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
-    // queryy to check if user exists
+    // query to check if user exists
     const user = await db.query(findUserByEmail, [email]);
     // if the user already exists
     if (user.rows.length !== 0) {
@@ -37,7 +55,7 @@ const authUser = async (req, res) => {
       const newUser = await db.query(createNewUserQuery, postParams);
 
       // if the data was created - send the new data back
-      res.status(200).json({
+      res.status(201).json({
         status: 'success',
         user: newUser.rows[0],
       });

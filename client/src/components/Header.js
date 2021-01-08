@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import DebtFinder from '../APIs/DebtFinder';
+import DebtFinder from '../utils/API';
 import { DebtsContext } from '../context/DebtsContext';
 
 const Header = (props) => {
@@ -11,7 +11,7 @@ const Header = (props) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await DebtFinder.get('/');
+        const response = await DebtFinder.get('/debts');
         console.log(response.data.debts);
         setDebts(response.data.debts);
       } catch (error) {
@@ -24,7 +24,7 @@ const Header = (props) => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await DebtFinder.delete(`/${id}`);
+      const response = await DebtFinder.delete(`debts/${id}`);
       console.log(response);
       setDebts(
         debts.filter((debt) => {

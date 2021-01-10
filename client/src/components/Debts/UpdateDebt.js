@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import DebtFinder from '../utils/API';
-import { DebtsContext } from '../context/DebtsContext';
+import API from '../../utils/API';
+import DebtsContext from '../../context/debts/debtContext';
 
 const UpdateDebt = () => {
   const { id } = useParams();
@@ -14,7 +14,7 @@ const UpdateDebt = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await DebtFinder.get(`/${id}`);
+        const response = await API.get(`${id}`);
         console.log(response.data);
       } catch (error) {
         console.error(error);

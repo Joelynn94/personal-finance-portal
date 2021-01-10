@@ -1,5 +1,5 @@
-import React from 'react'
-import UpdateDebt from '../components/UpdateDebt'
+import React from 'react';
+import UpdateDebt from '../components/Debts/UpdateDebt';
 
 const UpdateDebtPage = () => {
   return (
@@ -7,7 +7,7 @@ const UpdateDebtPage = () => {
       Update
       <UpdateDebt />
     </div>
-  )
-}
+  );
+};
 
-export default UpdateDebtPage
+export default UpdateDebtPage;

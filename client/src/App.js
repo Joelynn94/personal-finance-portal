@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import DebtsContextProvider from './context/DebtsContext';
+
+import DebtsContextProvider from './context/debts/debtState';
 import Dashboard from './views/Dashboard';
 import DebtCalculator from './views/DebtCalculator';
 import UpdateDebtPage from './views/UpdateDebtPage';

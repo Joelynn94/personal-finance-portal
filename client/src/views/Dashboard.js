@@ -1,14 +1,14 @@
-import React from 'react'
-import AddDebt from '../components/AddDebt'
-import Header from "../components/Header"
+import React from 'react';
+import AddDebt from '../components/Debts/AddDebt';
+import Debts from '../components/Debts/Debts';
 
 const Dashboard = () => {
   return (
     <>
       <AddDebt />
-      <Header />
+      <Debts />
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

@@ -39,7 +39,7 @@ const registerUser = async (req, res) => {
     // if the user already exists
     if (user.rows.length !== 0) {
       return res
-        .status(401)
+        .status(400)
         .send({ status: `User with the email ${email} already exists` });
     } else {
       // query to create a new user

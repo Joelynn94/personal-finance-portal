@@ -24,7 +24,7 @@ const Navigation = () => {
   return (
     <Navbar expand='md'>
       <Container>
-        <NavbarBrand href='/'>reactstrap</NavbarBrand>
+        <NavbarBrand href='/'>Personal Finance Portal</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className='mr-auto' navbar>

@@ -1,0 +1,9 @@
+export const GET_DEBTS = 'GET_DEBTS';
+export const ADD_DEBT = 'ADD_DEBT';
+export const DELETE_DEBT = 'DELETE_DEBT';
+export const UPDATE_DEBT = 'UPDATE_DEBT';
+export const DEBT_ERROR = 'DEBT_ERROR';
+export const FILTER_DEBT = 'FILTER_DEBT';
+export const CLEAR_FILTER = 'CLEAR_FILTER';
+export const SET_ALERT = 'SET_ALERT';
+export const REMOVE_ALERT = 'REMOVE_ALERT';

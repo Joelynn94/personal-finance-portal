@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
       next();
     } catch (error) {
       res.status(403).json({
-        message: 'Not Authorized',
+        message: 'Not Authorized, token is not valid',
       });
     }
   }

@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 
-import DebtsContext from './debtContext';
+import debtsContext from './debtContext';
 import debtReducer from './debtReducer';
 import {
   GET_DEBTS,
@@ -84,12 +84,13 @@ const DebtState = (props) => {
   // Clear filter
 
   return (
-    <DebtsContext.Provider
+    <debtsContext.Provider
       value={{
         // state values
         debts: state.debts,
         filtered: state.filtered,
         error: state.error,
+        loading: state.loading,
         // actions used
         getDebts,
         addDebt,
@@ -98,7 +99,7 @@ const DebtState = (props) => {
       }}
     >
       {props.children}
-    </DebtsContext.Provider>
+    </debtsContext.Provider>
   );
 };
 

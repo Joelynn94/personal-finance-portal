@@ -39,8 +39,8 @@ const registerUser = async (req, res) => {
     // if the user already exists
     if (user.rows.length !== 0) {
       return res
-        .status(400)
-        .send({ status: `User with the email ${email} already exists` });
+        .status(409)
+        .json({ msg: `User with the email ${email} already exists` });
     } else {
       // query to create a new user
       const createNewUserQuery =
@@ -62,14 +62,12 @@ const registerUser = async (req, res) => {
         name: newUser.rows[0].user_name,
         email: newUser.rows[0].user_email,
         token: generateToken(newUser.rows[0].user_id),
-        status: 'Success! A new user has been created',
+        msg: 'Success! A new user has been created',
       });
     }
   } catch (error) {
-    res.status(500).json({
-      status: error,
-      message: 'Server error',
-    });
+    console.log(error.message);
+    res.status(500).send('Server Error!');
   }
 };
 
@@ -85,7 +83,7 @@ const loginUser = async (req, res) => {
 
   // let the validator check the req
   const errors = validationResult(req);
-  // check is errors is empty
+  // check is errors empty
   if (!errors.isEmpty()) {
     // sends a status of 400 and sends json data that gives back an array of errors
     return res.status(400).json({ errors: errors.array() });
@@ -96,7 +94,7 @@ const loginUser = async (req, res) => {
     // if the user does not exist
     if (user.rows.length === 0) {
       return res.status(401).send({
-        status: `User with the email ${email} does not exists, please register first`,
+        msg: `User with the email ${email} does not exists, please register first`,
       });
     }
     // check if password is valid
@@ -107,7 +105,7 @@ const loginUser = async (req, res) => {
     // if the password is not valid
     if (!validPassword) {
       return res.status(401).send({
-        status: `User with the password ${password} does not match, please enter a valid password`,
+        msg: `User with the password ${password} does not match, please enter a valid password`,
       });
     }
 
@@ -117,13 +115,11 @@ const loginUser = async (req, res) => {
       name: user.rows[0].user_name,
       email: user.rows[0].user_email,
       token: generateToken(user.rows[0].user_id),
-      status: 'Success! A user has been logged in',
+      msg: 'Success! A user has been logged in',
     });
   } catch (error) {
-    res.status(500).json({
-      status: error,
-      message: 'Server error',
-    });
+    console.log(error.message);
+    res.status(500).send('Server Error!');
   }
 };
 
@@ -141,13 +137,11 @@ const getAuthUser = async (req, res) => {
       name: user.rows[0].user_name,
       email: user.rows[0].user_email,
       token: generateToken(user.rows[0].user_id),
-      status: 'Success! The user is authorized',
+      msg: 'Success! The user is authorized',
     });
   } catch (error) {
-    res.status(500).json({
-      status: error,
-      message: 'Server error',
-    });
+    console.log(error.message);
+    res.status(500).send('Server Error!');
   }
 };
 

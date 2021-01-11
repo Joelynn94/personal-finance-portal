@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-const DebtsContext = createContext();
+const debtsContext = createContext();
 
-export default DebtsContext;
+export default debtsContext;

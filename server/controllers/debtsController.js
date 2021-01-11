@@ -13,14 +13,13 @@ const getAllDebts = async (req, res) => {
   try {
     const { rows } = await db.query(findAllQuery);
     res.status(200).json({
-      status: 'success',
+      msg: 'Success! Found all debts for this user',
       results: rows.length,
       debts: rows,
     });
   } catch (error) {
-    res.status(500).json({
-      status: error,
-    });
+    console.log(error.message);
+    res.status(500).send('Server Error!');
   }
 };
 
@@ -58,13 +57,12 @@ const createDebt = async (req, res) => {
 
     // if the data was created - send the new data back
     res.status(201).json({
-      status: 'success',
+      msg: `Success! A new debt has been created`,
       debt: rows[0],
     });
   } catch (error) {
-    res.status(500).json({
-      status: error,
-    });
+    console.log(error.message);
+    res.status(500).send('Server Error!');
   }
 };
 
@@ -90,14 +88,13 @@ const getDebtById = async (req, res) => {
       // if there is data - return the data
     } else {
       res.status(200).json({
-        status: 'success',
+        msg: `Success! Found debt ${req.params.id}`,
         debt: rows[0],
       });
     }
   } catch (error) {
-    res.status(500).json({
-      status: error,
-    });
+    console.log(error.message);
+    res.status(500).send('Server Error!');
   }
 };
 
@@ -137,19 +134,18 @@ const updateDeptById = async (req, res) => {
     if (!rows[0]) {
       // return an error
       return res.status(404).send({
-        status: `Failed to find this debt, ID ${req.params.id} does not exist`,
+        msg: `Failed to find this debt, ID ${req.params.id} does not exist`,
       });
       // if there is data - return the updated data
     } else {
       res.status(200).json({
-        status: 'success',
+        msg: `Success! Debt ID ${req.params.id} has been updated`,
         debt: rows[0],
       });
     }
   } catch {
-    res.status(500).send({
-      status: `Failed to update this debt, ID ${req.params.id} does not exist`,
-    });
+    console.log(error.message);
+    res.status(500).send('Server Error!');
   }
 };
 
@@ -170,18 +166,17 @@ const deleteDebt = async (req, res) => {
     if (!rows[0]) {
       // return an error
       return res.status(404).send({
-        status: `Failed to delete debt, ID ${req.params.id} does not exist`,
+        msg: `Failed to delete debt, ID ${req.params.id} does not exist`,
       });
       // if there is data and it was updated - return a message
     } else {
       return res
         .status(200)
-        .send({ status: `ID ${req.params.id} was successfully deleted` });
+        .send({ msg: `ID ${req.params.id} was successfully deleted` });
     }
   } catch (error) {
-    res.status(500).json({
-      status: error,
-    });
+    console.log(error.message);
+    res.status(500).send('Server Error!');
   }
 };
 

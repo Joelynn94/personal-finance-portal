@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import API from '../../utils/API';
-import DebtsContext from '../../context/debts/debtContext';
+import debtsContext from '../../context/debts/debtContext';
 
 const UpdateDebt = () => {
   const { id } = useParams();
-  const { debts } = useContext(DebtsContext);
+  const { debts } = useContext(debtsContext);
   const [balance, setBalance] = useState('');
   const [minPayment, setMinPayment] = useState('');
   const [interestRate, setInterestRate] = useState('');

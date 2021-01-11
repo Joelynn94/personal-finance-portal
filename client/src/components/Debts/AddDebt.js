@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import API from '../../utils/API';
-import DebtsContext from '../../context/debts/debtContext';
+import debtsContext from '../../context/debts/debtContext';
 
 const AddDebt = () => {
-  const { addDebts } = useContext(DebtsContext);
+  const { addDebts } = useContext(debtsContext);
   const [debt, setDebt] = useState({
     balance: 0,
     interestRate: 0,
@@ -21,7 +21,7 @@ const AddDebt = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      DebtsContext.addDebt();
+      debtsContext.addDebt();
       const response = await API.post('/debts', {
         balance: balance,
         interest_rate: interestRate,

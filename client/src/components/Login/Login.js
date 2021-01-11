@@ -13,33 +13,29 @@ import API from '../../utils/API';
 
 import './styles.css';
 
-const SignupForm = () => {
-  const [signupForm, setSignupForm] = useState({
-    name: '',
+const LoginForm = () => {
+  const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
-    isadmin: false,
   });
 
-  const { name, email, password } = signupForm;
+  const { email, password } = loginForm;
 
-  const onSignupInputChange = (e) => {
-    setSignupForm({
-      ...signupForm,
+  const onLoginInputChange = (e) => {
+    setLoginForm({
+      ...loginForm,
       [e.target.name]: [e.target.value],
     });
-    console.log(signupForm);
+    console.log(loginForm);
   };
 
-  const onSignupFormSubmit = async (e) => {
+  const onLoginFormSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await API.post('/users/signup', {
-        name,
         email,
         password,
-        isadmin: true,
       });
       console.log(response);
     } catch (error) {
@@ -51,30 +47,18 @@ const SignupForm = () => {
     <>
       <Card>
         <CardTitle>
-          <h2>Signup</h2>
+          <h2>Login</h2>
         </CardTitle>
 
         <CardBody>
-          <Form onSubmit={onSignupFormSubmit}>
-            <FormGroup>
-              <Label htmlFor='name'>Name</Label>
-              <Input
-                type='text'
-                name='name'
-                value={name}
-                onChange={(e) => onSignupInputChange(e)}
-                required
-              />
-              <small className='name error'></small>
-            </FormGroup>
-
+          <Form onSubmit={onLoginFormSubmit}>
             <FormGroup>
               <Label htmlFor='email'>Email</Label>
               <Input
                 type='text'
                 name='email'
                 value={email}
-                onChange={(e) => onSignupInputChange(e)}
+                onChange={(e) => onLoginInputChange(e)}
                 required
               />
               <small className='email error'></small>
@@ -86,14 +70,14 @@ const SignupForm = () => {
                 type='password'
                 name='password'
                 value={password}
-                onChange={(e) => onSignupInputChange(e)}
+                onChange={(e) => onLoginInputChange(e)}
                 required
               />
               <small className='password error'></small>
             </FormGroup>
 
             <Button type='submit' color='primary' size='large' className='mt-3'>
-              Sign Up
+              Login
             </Button>
           </Form>
         </CardBody>
@@ -102,4 +86,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default LoginForm;

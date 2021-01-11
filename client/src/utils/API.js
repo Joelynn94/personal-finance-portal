@@ -16,14 +16,14 @@ const API = {
   deleteDebt: function (id) {
     return axios.delete(`http://localhost:3001/api/v1/debts/${id}`);
   },
-  signupUser: function () {
-    return axios.post('http://localhost:3001/api/v1/signup');
+  signupUser: function (formData) {
+    return axios.post('http://localhost:3001/api/v1/users/signup', formData);
   },
   loginUser: function () {
-    return axios.post('http://localhost:3001/api/v1/login');
+    return axios.post('http://localhost:3001/api/v1/users/login');
   },
   getIfAuthUser: function () {
-    return axios.get('http://localhost:3001/api/v1/auth');
+    return axios.get('http://localhost:3001/api/v1/users/auth');
   },
 };
 

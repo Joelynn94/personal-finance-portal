@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import DebtsContext from '../../context/debts/debtContext';
+import debtsContext from '../../context/debts/debtContext';
 import Loader from '../Loader/Loader';
 
 const Debts = () => {
-  const { debts, getDebts, loading, deleteDebt } = useContext(DebtsContext);
+  const { debts, getDebts, loading, deleteDebt } = useContext(debtsContext);
   const history = useHistory();
 
   useEffect(() => {

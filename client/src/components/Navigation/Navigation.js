@@ -35,7 +35,10 @@ const Navigation = () => {
               <NavLink href='/debts'>Add Debts</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href='/signup'>Sign Up</NavLink>
+              <NavLink href='/signup'>Register</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href='/login'>Login</NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>

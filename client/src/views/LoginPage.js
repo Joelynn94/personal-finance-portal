@@ -1,12 +1,12 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import SignupForm from '../components/Signup/SignupForm';
+import Login from '../components/Login/Login';
 
 const SignupPage = () => {
   return (
     <Row>
       <Col>
-        <SignupForm />
+        <Login />
       </Col>
     </Row>
   );

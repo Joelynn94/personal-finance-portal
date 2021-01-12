@@ -1,31 +1,27 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
-  let token = '';
+  try {
+    // Get token from the header
+    // we can access the header through the req
+    // x-auth-token is basically the key to the token inside the header
+    const token = req.header('x-auth-token');
 
-  // if there is not token
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    try {
-      token = req.headers.authorization.split(' ')[1];
-      // checks if the jwt token is valid
-      const user = jwt.verify(token, process.env.jwtSecret);
-
-      // puts this payload into the user object (req.user) - so we can access this in our routes
-      req.user = user;
-      next();
-    } catch (error) {
-      res.status(403).json({
-        message: 'Not Authorized, token is not valid',
-      });
+    // Check if token exists
+    if (!token) {
+      // 401 is an unauthoized status
+      return res.status(401).json({ msg: 'No token, authorization denied' });
     }
-  }
+    // if there is a token we need to verify it
+    // pass in the token and the secret
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
 
-  if (!token) {
-    res.status(401).json({
-      status: 'Not authorized, no token',
-    });
+    // once the token is verified - the payload (is an object) is put into decoded
+    // take the user out of decoded - decoded is the entire token payload
+    req.user = payload.user;
+    // call next to move on
+    next();
+  } catch (error) {
+    res.status(401).json({ msg: 'Token is not valid' });
   }
 };

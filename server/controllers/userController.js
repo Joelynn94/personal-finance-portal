@@ -62,7 +62,7 @@ const registerUser = async (req, res) => {
         name: newUser.rows[0].user_name,
         email: newUser.rows[0].user_email,
         token: generateToken(newUser.rows[0].user_id),
-        msg: 'Success! A new user has been created',
+        msg: `Success! User ${newUser.rows[0].user_name} has been created`,
       });
     }
   } catch (error) {
@@ -115,7 +115,7 @@ const loginUser = async (req, res) => {
       name: user.rows[0].user_name,
       email: user.rows[0].user_email,
       token: generateToken(user.rows[0].user_id),
-      msg: 'Success! A user has been logged in',
+      msg: `Success! User ${user.rows[0].user_name} has been logged in`,
     });
   } catch (error) {
     console.log(error.message);
@@ -125,20 +125,15 @@ const loginUser = async (req, res) => {
 
 const getAuthUser = async (req, res) => {
   // query to find user by user_id
-  const findUserById = 'SELECT * FROM users WHERE user_id = $1';
+  const findUserById =
+    'SELECT user_id, user_name FROM users WHERE user_id = $1';
 
   try {
     // query to check if user exists
-    const user = await db.query(findUserById, [req.user.id]);
+    // req.user has the payload
+    const user = await db.query(findUserById, [req.user]);
 
-    // create the payload object to send back
-    res.status(201).json({
-      id: user.rows[0].user_id,
-      name: user.rows[0].user_name,
-      email: user.rows[0].user_email,
-      token: generateToken(user.rows[0].user_id),
-      msg: 'Success! The user is authorized',
-    });
+    res.json(user.rows[0]);
   } catch (error) {
     console.log(error.message);
     res.status(500).send('Server Error!');

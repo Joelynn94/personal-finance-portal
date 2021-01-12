@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -14,7 +15,8 @@ import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
 import './styles.css';
 
-const Register = ({ history }) => {
+const Register = () => {
+  const history = useHistory();
   const { registerUser, isAuthenticated, error, clearErrors } = useContext(
     AuthContext
   );
@@ -30,11 +32,16 @@ const Register = ({ history }) => {
   const { name, email, password, cpassword } = user;
 
   useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/dashboard');
+    }
+
     if (error === `User with the email ${email} already exists`) {
       setAlert(error, 'danger');
       clearErrors();
     }
-  });
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, history]);
 
   const onRegisterInputChange = (e) => {
     setUser({
@@ -58,9 +65,6 @@ const Register = ({ history }) => {
         email,
         password,
       });
-      if (isAuthenticated) {
-        history.push('/dashboard');
-      }
     }
   };
 

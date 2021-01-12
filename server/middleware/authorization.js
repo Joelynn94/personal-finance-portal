@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
 
     // Check if token exists
     if (!token) {
-      // 401 is an unauthoized status
+      // 401 is an unauthorized status
       return res.status(401).json({ msg: 'No token, authorization denied' });
     }
     // if there is a token we need to verify it
@@ -18,6 +18,7 @@ module.exports = async (req, res, next) => {
 
     // once the token is verified - the payload (an object) is put into decoded
     // take the user out of decoded - decoded is the entire token payload
+    console.log(payload.user.id);
     req.user = payload.user;
     // call next to move on
     next();

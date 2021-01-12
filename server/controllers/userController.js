@@ -13,61 +13,70 @@ const db = require('../db');
 const registerUser = async (req, res) => {
   const findUserByEmail = 'SELECT * FROM users WHERE user_email = $1';
 
-  // destructure from the req.body
-  const { name, email, password } = req.body;
-
-  await check('name', 'Please add a valid name that is not empty')
-    .not()
-    .isEmpty()
-    .run(req);
-  await check('email', 'Please enter a valid email address').isEmail().run(req);
-  await check('password', 'Password must be at least 6 characters in length')
-    .isLength({ min: 6 })
-    .run(req);
-
-  // let the validator check the req
-  const errors = validationResult(req);
-  // check is errors is empty
-  if (!errors.isEmpty()) {
-    // sends a status of 400 and sends json data that gives back an array of errors
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   try {
-    // query to check if user exists
+    // destructure from the req.body
+    const { name, email, password } = req.body;
+
+    // check the name is not an empty string
+    await check('name', 'Please add a valid name that is not empty')
+      .not()
+      .isEmpty()
+      .trim()
+      .run(req);
+    // check the email follows a valid email address pattern
+    await check('email', 'Please enter a valid email address')
+      .trim()
+      .isEmail()
+      .run(req);
+    // check the password is at least 6 characters in length
+    await check('password', 'Password must be at least 6 characters in length')
+      .trim()
+      .isLength({ min: 6 })
+      .run(req);
+    // let the validator check the req
+    const errors = validationResult(req);
+
+    // check if errors are not empty
+    if (!errors.isEmpty()) {
+      // sends a status of 400 and send json data that gives back an array of errors
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // query to check if user exists, querying by email
     const user = await db.query(findUserByEmail, [email]);
     // if the user already exists
     if (user.rows.length !== 0) {
       return res
         .status(409)
-        .json({ msg: `User with the email ${email} already exists` });
-    } else {
-      // query to create a new user
-      const createNewUserQuery =
-        'INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *';
+        .json({ msg: `An account with the email ${email} already exists` });
+    }
 
-      // bcrypt the password before saving new user to database
-      const salt = await bcrypt.genSalt(10);
-      const bcryptPassword = await bcrypt.hash(password, salt);
+    // query to create a new user
+    const createNewUserQuery =
+      'INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *';
 
-      // values to use to create new data in the database
-      const postParams = [name, email, bcryptPassword];
+    // bcrypt the password before saving new user to database
+    const salt = await bcrypt.genSalt(10);
+    const bcryptPassword = await bcrypt.hash(password, salt);
 
-      // create the new user
-      const newUser = await db.query(createNewUserQuery, postParams);
+    // values to use to create new data in the database
+    const newUserParams = [name, email, bcryptPassword];
 
-      // create the payload object to send back
-      res.status(201).json({
+    // create the new user
+    const newUser = await db.query(createNewUserQuery, newUserParams);
+
+    // create the payload object to send back
+    res.status(201).json({
+      token: generateToken(newUser.rows[0].user_id),
+      user: {
         id: newUser.rows[0].user_id,
         name: newUser.rows[0].user_name,
         email: newUser.rows[0].user_email,
-        token: generateToken(newUser.rows[0].user_id),
         msg: `Success! User ${newUser.rows[0].user_name} has been created`,
-      });
-    }
+      },
+    });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send('Server Error!');
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -75,51 +84,53 @@ const loginUser = async (req, res) => {
   // query to find user by user_email
   const findUserByEmail = 'SELECT * FROM users WHERE user_email = $1';
 
-  // destructure from the req.body
-  const { email, password } = req.body;
-
-  await check('email', 'Please enter a valid email address').isEmail().run(req);
-  await check('password', 'Password is required').exists().run(req);
-
-  // let the validator check the req
-  const errors = validationResult(req);
-  // check is errors empty
-  if (!errors.isEmpty()) {
-    // sends a status of 400 and sends json data that gives back an array of errors
-    return res.status(400).json({ errors: errors.array() });
-  }
   try {
+    // destructure from the req.body
+    const { email, password } = req.body;
+
+    await check('email', 'Please enter a valid email address')
+      .trim()
+      .isEmail()
+      .run(req);
+    await check('password', 'Password is required').trim().exists().run(req);
+
+    // let the validator check the req
+    const errors = validationResult(req);
+    // check if errors are not empty
+    if (!errors.isEmpty()) {
+      // sends a status of 400 and send json data that gives back an array of errors
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     // query to check if user exists
     const user = await db.query(findUserByEmail, [email]);
     // if the user does not exist
     if (user.rows.length === 0) {
       return res.status(401).json({
-        msg: `User with the email ${email} does not exists, please register first`,
+        msg: `User with the email ${email} does not exists, please register before trying to sign in`,
       });
     }
     // check if password is valid
-    const validPassword = await bcrypt.compare(
-      password,
-      user.rows[0].user_password
-    );
+    const isMatch = await bcrypt.compare(password, user.rows[0].user_password);
     // if the password is not valid
-    if (!validPassword) {
+    if (!isMatch) {
       return res.status(401).json({
-        msg: `User with the password ${password} does not match, please enter a valid password`,
+        msg: 'Invalid credentials',
       });
     }
 
     // create the payload object to send back
     res.status(201).json({
-      id: user.rows[0].user_id,
-      name: user.rows[0].user_name,
-      email: user.rows[0].user_email,
       token: generateToken(user.rows[0].user_id),
-      msg: `Success! User ${user.rows[0].user_name} has been logged in`,
+      user: {
+        id: user.rows[0].user_id,
+        name: user.rows[0].user_name,
+        email: user.rows[0].user_email,
+        msg: `Success! User ${user.rows[0].user_name} has been logged in`,
+      },
     });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send('Server Error!');
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -135,8 +146,7 @@ const getAuthUser = async (req, res) => {
 
     res.json(user.rows[0]);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send('Server Error!');
+    res.status(500).json({ error: error.message });
   }
 };
 

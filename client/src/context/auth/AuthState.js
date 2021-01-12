@@ -13,10 +13,10 @@ import axios from 'axios';
 
 const AuthState = (props) => {
   const initialState = {
-    user: null,
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
+    user: null,
     error: null,
   };
 
@@ -36,6 +36,7 @@ const AuthState = (props) => {
     } catch (error) {
       dispatch({
         type: AUTH_ERROR,
+        payload: error.response.data.msg,
       });
     }
   };
@@ -62,11 +63,11 @@ const AuthState = (props) => {
 
       loadUser();
     } catch (error) {
+      console.log(error.response.data.msg);
       dispatch({
         type: REGISTER_FAIL,
-        payload: error.response && error.response.data.msg,
+        payload: error.response.data.msg,
       });
-      console.log(error.response.data.msg);
     }
   };
 
@@ -78,10 +79,10 @@ const AuthState = (props) => {
     <AuthContext.Provider
       value={{
         // state values
-        user: state.user,
         token: state.token,
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
+        user: state.user,
         error: state.error,
         // actions used
         registerUser,

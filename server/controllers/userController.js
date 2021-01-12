@@ -93,7 +93,7 @@ const loginUser = async (req, res) => {
     const user = await db.query(findUserByEmail, [email]);
     // if the user does not exist
     if (user.rows.length === 0) {
-      return res.status(401).send({
+      return res.status(401).json({
         msg: `User with the email ${email} does not exists, please register first`,
       });
     }
@@ -104,7 +104,7 @@ const loginUser = async (req, res) => {
     );
     // if the password is not valid
     if (!validPassword) {
-      return res.status(401).send({
+      return res.status(401).json({
         msg: `User with the password ${password} does not match, please enter a valid password`,
       });
     }
@@ -126,12 +126,12 @@ const loginUser = async (req, res) => {
 const getAuthUser = async (req, res) => {
   // query to find user by user_id
   const findUserById =
-    'SELECT user_id, user_name FROM users WHERE user_id = $1';
+    'SELECT user_id, user_name, user_email FROM users WHERE user_id = $1';
 
   try {
     // query to check if user exists
     // req.user has the payload
-    const user = await db.query(findUserById, [req.user]);
+    const user = await db.query(findUserById, [req.user.id]);
 
     res.json(user.rows[0]);
   } catch (error) {

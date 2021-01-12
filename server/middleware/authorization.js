@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
     // pass in the token and the secret
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
-    // once the token is verified - the payload (is an object) is put into decoded
+    // once the token is verified - the payload (an object) is put into decoded
     // take the user out of decoded - decoded is the entire token payload
     req.user = payload.user;
     // call next to move on

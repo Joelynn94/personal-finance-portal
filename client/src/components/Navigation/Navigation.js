@@ -29,7 +29,7 @@ const Navigation = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className='mr-auto' navbar>
             <NavItem>
-              <NavLink href='/'>Dashboard</NavLink>
+              <NavLink href='/dashboard'>Dashboard</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href='/debts'>Add Debts</NavLink>

@@ -25,7 +25,7 @@ const App = () => {
             <Container>
               <Alerts />
               <Switch>
-                <Route exact path='/' component={Dashboard} />
+                <Route exact path='/dashboard' component={Dashboard} />
                 <Route exact path='/debts' component={DebtCalculator} />
                 <Route
                   exact

@@ -82,7 +82,7 @@ const getDebtById = async (req, res) => {
     // if the data is empty
     if (!rows[0]) {
       // return an error
-      return res.status(404).send({
+      return res.status(404).json({
         status: `Failed to find this debt, ID ${req.params.id} does not exist`,
       });
       // if there is data - return the data
@@ -133,7 +133,7 @@ const updateDeptById = async (req, res) => {
     // if the data is empty
     if (!rows[0]) {
       // return an error
-      return res.status(404).send({
+      return res.status(404).json({
         msg: `Failed to find this debt, ID ${req.params.id} does not exist`,
       });
       // if there is data - return the updated data
@@ -165,14 +165,14 @@ const deleteDebt = async (req, res) => {
     // if the data is empty
     if (!rows[0]) {
       // return an error
-      return res.status(404).send({
+      return res.status(404).json({
         msg: `Failed to delete debt, ID ${req.params.id} does not exist`,
       });
       // if there is data and it was updated - return a message
     } else {
       return res
         .status(200)
-        .send({ msg: `ID ${req.params.id} was successfully deleted` });
+        .json({ msg: `ID ${req.params.id} was successfully deleted` });
     }
   } catch (error) {
     console.log(error.message);

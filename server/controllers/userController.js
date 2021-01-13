@@ -142,7 +142,7 @@ const getAuthUser = async (req, res) => {
   try {
     // query to check if user exists
     // req.user has the payload
-    const user = await db.query(findUserById, [req.user.id]);
+    const user = await db.query(findUserById, [req.user]);
 
     res.json(user.rows[0]);
   } catch (error) {

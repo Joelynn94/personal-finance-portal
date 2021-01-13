@@ -14,6 +14,11 @@ import './app.css';
 import Alerts from './components/Alerts/Alerts';
 import Navigation from './components/Navigation/Navigation';
 import { Container } from 'reactstrap';
+import setAuthToken from './utils/setAuthToken';
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
   return (

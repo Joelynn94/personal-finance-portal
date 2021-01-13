@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import axios from 'axios';
 
 import AuthContext from './authContext';
 import authReducer from './authReducer';
@@ -9,7 +10,7 @@ import {
   USER_LOADED,
   AUTH_ERROR,
 } from '../../utils/constants';
-import axios from 'axios';
+import setAuthToken from '../../utils/setAuthToken';
 
 const AuthState = (props) => {
   const initialState = {
@@ -24,9 +25,19 @@ const AuthState = (props) => {
 
   // Load user
   const loadUser = async () => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+
+    const config = {
+      headers: {
+        'a-auth-token': localStorage.token,
+      },
+    };
     try {
       const response = await axios.get(
-        'http://localhost:3001/api/v1/users/auth'
+        'http://localhost:3001/api/v1/users/auth',
+        config
       );
       dispatch({
         type: USER_LOADED,

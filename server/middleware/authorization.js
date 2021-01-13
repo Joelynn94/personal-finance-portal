@@ -14,15 +14,21 @@ module.exports = async (req, res, next) => {
     }
     // if there is a token we need to verify it
     // pass in the token and the secret
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
 
-    // once the token is verified - the payload (an object) is put into decoded
-    // take the user out of decoded - decoded is the entire token payload
-    console.log(payload.user.id);
-    req.user = payload.user;
+    if (!verified) {
+      // 401 is an unauthorized status
+      return res
+        .status(401)
+        .json({ msg: 'Token verification failed, authorization denied' });
+    }
+    // once the token is verified
+    // take the user out of verified - verified is the entire token verified
+    console.log(verified.id);
+    req.user = verified.id;
     // call next to move on
     next();
   } catch (error) {
-    res.status(401).json({ msg: 'Token is not valid' });
+    res.status(401).json({ error: error.message });
   }
 };

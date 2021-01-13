@@ -9,6 +9,9 @@ import {
   CLEAR_ERRORS,
   USER_LOADED,
   AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  USER_LOGOUT,
 } from '../../utils/constants';
 import setAuthToken from '../../utils/setAuthToken';
 
@@ -29,16 +32,13 @@ const AuthState = (props) => {
       setAuthToken(localStorage.token);
     }
 
-    const config = {
-      headers: {
-        'a-auth-token': localStorage.token,
-      },
-    };
     try {
       const response = await axios.get(
         'http://localhost:3001/api/v1/users/auth',
-        config
+        null,
+        { headers: { 'x-auth-token': localStorage.token } }
       );
+      console.log(response.data);
       dispatch({
         type: USER_LOADED,
         payload: response.data,
@@ -82,6 +82,40 @@ const AuthState = (props) => {
     }
   };
 
+  // login user
+  const loginUser = async (formData) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3001/api/v1/users/login',
+        formData,
+        config
+      );
+
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: response.data,
+      });
+
+      loadUser();
+    } catch (error) {
+      console.log(error.response.data.msg);
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: error.response.data.msg,
+      });
+    }
+  };
+
+  const userLogout = () => {
+    dispatch({ type: USER_LOGOUT });
+  };
+
   const clearErrors = () => {
     dispatch({ type: CLEAR_ERRORS });
   };
@@ -99,6 +133,8 @@ const AuthState = (props) => {
         registerUser,
         clearErrors,
         loadUser,
+        loginUser,
+        userLogout,
       }}
     >
       {props.children}

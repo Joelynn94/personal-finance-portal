@@ -82,7 +82,8 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   // query to find user by user_email
-  const findUserByEmail = 'SELECT * FROM users WHERE user_email = $1';
+  const findUserByEmail =
+    'SELECT * FROM users WHERE user_email = $1 RETURNING *';
 
   try {
     // destructure from the req.body
@@ -137,14 +138,37 @@ const loginUser = async (req, res) => {
 const getAuthUser = async (req, res) => {
   // query to find user by user_id
   const findUserById =
-    'SELECT user_id, user_name, user_email FROM users WHERE user_id = $1';
+    'SELECT user_id, user_name, user_email FROM users WHERE user_id = $1 RETURNING *';
 
   try {
     // query to check if user exists
     // req.user has the payload
     const user = await db.query(findUserById, [req.user]);
 
+    // check if there is a token in the header
+    const token = req.header('x-auth-token');
+    if (!token) {
+      return res.status(401).json({
+        msg: 'User is not authorized to go here, please register',
+      });
+    }
+
     res.json(user.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  // query to find user by user_id
+  const deleteUserById = 'DELETE users WHERE user_id = $1 RETURNING *';
+
+  try {
+    // query to check if user exists
+    // req.user has the payload
+    const deletedUser = await db.query(deleteUserById, [req.user]);
+
+    res.json(deletedUser.rows[0]);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -154,4 +178,5 @@ module.exports = {
   registerUser,
   loginUser,
   getAuthUser,
+  deleteUser,
 };

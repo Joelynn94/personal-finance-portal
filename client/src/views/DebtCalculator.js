@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react';
+import AuthContext from '../context/auth/authContext';
 
 const DebtCalculator = () => {
-  return (
-    <div>
-      Debt Calculator
-    </div>
-  )
-}
+  const { loadUser } = useContext(AuthContext);
 
-export default DebtCalculator
+  useEffect(() => {
+    loadUser();
+    //eslint-disable-next-line
+  }, []);
+
+  return <div>Debt Calculator</div>;
+};
+
+export default DebtCalculator;

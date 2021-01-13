@@ -4,6 +4,9 @@ import {
   CLEAR_ERRORS,
   USER_LOADED,
   AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  USER_LOGOUT,
 } from '../../utils/constants';
 
 const authReducer = (state, action) => {
@@ -20,6 +23,7 @@ const authReducer = (state, action) => {
         user: action.payload,
       };
     case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       // add the token to local storage
       localStorage.setItem('token', action.payload.token);
       return {
@@ -34,6 +38,8 @@ const authReducer = (state, action) => {
       };
     case AUTH_ERROR:
     case REGISTER_FAIL:
+    case LOGIN_FAIL:
+    case USER_LOGOUT:
       // remove the token from local storage
       localStorage.removeItem('token');
       return {

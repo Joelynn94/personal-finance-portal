@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+
 import DebtState from './context/debts/DebtState';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
@@ -30,7 +32,7 @@ const App = () => {
             <Container>
               <Alerts />
               <Switch>
-                <Route exact path='/dashboard' component={Dashboard} />
+                <PrivateRoute exact path='/dashboard' component={Dashboard} />
                 <Route exact path='/debts' component={DebtCalculator} />
                 <Route
                   exact

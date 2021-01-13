@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -9,11 +10,18 @@ import {
   Input,
   Label,
 } from 'reactstrap';
-import API from '../../utils/API';
+
+import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alert/alertContext';
 
 import './styles.css';
 
 const LoginForm = () => {
+  const history = useHistory();
+  const { loginUser, isAuthenticated, error, clearErrors } = useContext(
+    AuthContext
+  );
+  const { setAlert } = useContext(AlertContext);
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
@@ -21,25 +29,36 @@ const LoginForm = () => {
 
   const { email, password } = loginForm;
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/dashboard');
+    }
+
+    if (error === `Invalid credentials`) {
+      setAlert(error, 'danger');
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, history]);
+
   const onLoginInputChange = (e) => {
     setLoginForm({
       ...loginForm,
-      [e.target.name]: [e.target.value],
+      [e.target.name]: e.target.value,
     });
     console.log(loginForm);
   };
 
-  const onLoginFormSubmit = async (e) => {
+  const onLoginFormSubmit = (e) => {
     e.preventDefault();
 
-    try {
-      const response = await API.post('/users/signup', {
+    if (email === '' || password === '') {
+      setAlert('Please fill in all fields', 'danger');
+    } else {
+      loginUser({
         email,
         password,
       });
-      console.log(response);
-    } catch (error) {
-      console.log(error.message);
     }
   };
 
@@ -72,6 +91,7 @@ const LoginForm = () => {
                 value={password}
                 onChange={(e) => onLoginInputChange(e)}
                 required
+                minLength='6'
               />
               <small className='password error'></small>
             </FormGroup>

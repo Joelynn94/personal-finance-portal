@@ -20,7 +20,7 @@ const Register = () => {
   const { registerUser, isAuthenticated, error, clearErrors } = useContext(
     AuthContext
   );
-  const { setAlert, alerts } = useContext(AlertContext);
+  const { setAlert } = useContext(AlertContext);
 
   const [user, setUser] = useState({
     name: '',
@@ -58,7 +58,6 @@ const Register = () => {
       setAlert('Please enter all fields', 'danger');
     } else if (password !== cpassword) {
       setAlert('Passwords do not match', 'danger');
-      console.log(alerts);
     } else {
       registerUser({
         name,
@@ -84,6 +83,7 @@ const Register = () => {
                 name='name'
                 value={name}
                 onChange={(e) => onRegisterInputChange(e)}
+                required
               />
               <small className='name error'></small>
             </FormGroup>
@@ -95,6 +95,7 @@ const Register = () => {
                 name='email'
                 value={email}
                 onChange={(e) => onRegisterInputChange(e)}
+                required
               />
               <small className='email error'></small>
             </FormGroup>
@@ -106,6 +107,8 @@ const Register = () => {
                 name='password'
                 value={password}
                 onChange={(e) => onRegisterInputChange(e)}
+                required
+                minLength='6'
               />
               <small className='password error'></small>
             </FormGroup>
@@ -117,6 +120,7 @@ const Register = () => {
                 name='cpassword'
                 value={cpassword}
                 onChange={(e) => onRegisterInputChange(e)}
+                minLength='6'
               />
               <small className='password error'></small>
             </FormGroup>

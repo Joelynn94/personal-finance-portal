@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Container,
 } from 'reactstrap';
+import AuthContext from '../../context/auth/authContext';
+import AuthNavigation from './AuthNavigation';
+import GuestNavigation from './GuestNavigation';
 
 import './styles.css';
 
 const Navigation = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -28,29 +27,7 @@ const Navigation = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className='mr-auto' navbar>
-            <NavItem>
-              <NavLink href='/dashboard'>Dashboard</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href='/debts'>Add Debts</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href='/signup'>Register</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href='/login'>Login</NavLink>
-            </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Account
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>Profile</DropdownItem>
-                <DropdownItem>Settings</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Logout</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            {isAuthenticated ? <AuthNavigation /> : <GuestNavigation />}
           </Nav>
         </Collapse>
       </Container>

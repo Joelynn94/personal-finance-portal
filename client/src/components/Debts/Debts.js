@@ -10,8 +10,8 @@ const Debts = () => {
 
   useEffect(() => {
     getDebts();
-    console.log(debts);
     console.log(loading);
+    console.log(debts);
     // eslint-disable-next-line
   }, []);
 

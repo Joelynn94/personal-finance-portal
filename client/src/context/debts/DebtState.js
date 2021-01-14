@@ -9,7 +9,7 @@ import {
   UPDATE_DEBT,
   DEBT_ERROR,
 } from '../../utils/constants';
-import API from '../../utils/API';
+import axios from 'axios';
 
 const DebtState = (props) => {
   const initialState = {
@@ -24,7 +24,7 @@ const DebtState = (props) => {
   // get debts
   const getDebts = async () => {
     try {
-      const response = await API.getDebts();
+      const response = await axios.get('http://localhost:3001/api/v1/debts');
       // dispatch the type and payload to the reducer
       // getting all of the debts (response.data) to the payload
       dispatch({
@@ -41,10 +41,18 @@ const DebtState = (props) => {
 
   // Add debt
   const addDebt = async (debt) => {
-    debt.debt_id = debt;
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
 
     try {
-      const response = await API.addDebt(debt);
+      const response = await axios.post(
+        'http://localhost:3001/api/v1/debts',
+        debt,
+        config
+      );
       // dispatch the type and payload to the reducer
       // sending the new debt (response.data) to the payload
       dispatch({

@@ -82,8 +82,7 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   // query to find user by user_email
-  const findUserByEmail =
-    'SELECT * FROM users WHERE user_email = $1 RETURNING *';
+  const findUserByEmail = 'SELECT * FROM users WHERE user_email = $1';
 
   try {
     // destructure from the req.body
@@ -138,7 +137,7 @@ const loginUser = async (req, res) => {
 const getAuthUser = async (req, res) => {
   // query to find user by user_id
   const findUserById =
-    'SELECT user_id, user_name, user_email FROM users WHERE user_id = $1 RETURNING *';
+    'SELECT user_id, user_name, user_email FROM users WHERE user_id = $1';
 
   try {
     // query to check if user exists
@@ -161,7 +160,7 @@ const getAuthUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   // query to find user by user_id
-  const deleteUserById = 'DELETE users WHERE user_id = $1 RETURNING *';
+  const deleteUserById = 'DELETE users WHERE user_id = $1';
 
   try {
     // query to check if user exists

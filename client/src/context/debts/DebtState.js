@@ -8,6 +8,7 @@ import {
   DELETE_DEBT,
   UPDATE_DEBT,
   DEBT_ERROR,
+  CLEAR_DEBTS,
 } from '../../utils/constants';
 import axios from 'axios';
 
@@ -69,6 +70,22 @@ const DebtState = (props) => {
 
   // Delete debt
   const deleteDebt = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/api/v1/debts/${id}`
+      );
+      // dispatch the type and payload to the reducer
+      // sending the new debt (response.data) to the payload
+      dispatch({
+        type: DELETE_DEBT,
+        payload: response.id,
+      });
+    } catch (error) {
+      dispatch({
+        type: DEBT_ERROR,
+        payload: error.response,
+      });
+    }
     // dispatch the type and payload to the reducer
     // sending the id to the payload
     dispatch({
@@ -85,6 +102,10 @@ const DebtState = (props) => {
       type: UPDATE_DEBT,
       payload: debt,
     });
+  };
+
+  const clearDebts = async () => {
+    dispatch({ type: CLEAR_DEBTS });
   };
 
   // Filter debts
@@ -104,6 +125,7 @@ const DebtState = (props) => {
         addDebt,
         deleteDebt,
         updateDebt,
+        clearDebts,
       }}
     >
       {props.children}

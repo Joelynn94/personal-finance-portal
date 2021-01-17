@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
 
 const debtRoutes = require('./routes/debtRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -16,6 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // use CORS
 app.use(cors());
+// use morgan
+morgan('tiny');
 // use static files
 app.use(express.static('public'));
 

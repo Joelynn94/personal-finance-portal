@@ -36,6 +36,7 @@ const AddDebt = () => {
     setDebt({ ...debt, [name]: value });
 
     console.log(name);
+    console.log(value);
   };
 
   const handleSubmit = (e) => {
@@ -97,6 +98,9 @@ const AddDebt = () => {
           name='debt_type'
           onChange={(e) => onDebtStringChange(e)}
         >
+          <option value='' selected>
+            Select a type
+          </option>
           <option value='Student Loan'>Student Loan</option>
           <option value='Credit Card'>Credit Card</option>
         </select>

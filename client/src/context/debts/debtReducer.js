@@ -4,6 +4,7 @@ import {
   UPDATE_DEBT,
   GET_DEBTS,
   DEBT_ERROR,
+  CLEAR_DEBTS,
 } from '../../utils/constants';
 
 const debtReducer = (state, action) => {
@@ -19,7 +20,7 @@ const debtReducer = (state, action) => {
         // spread out current state
         ...state,
         // spread out the debts in state
-        debts: [...state.debts, action.payload],
+        debts: [action.payload, ...state.debts],
         // set loading to false
         loading: false,
       };
@@ -45,6 +46,14 @@ const debtReducer = (state, action) => {
         debts: state.debts.map((debt) => debt.debt_id !== action.payload),
         // set loading to false
         loading: false,
+      };
+    case CLEAR_DEBTS:
+      return {
+        ...state,
+        debts: null,
+        loading: false,
+        filtered: null,
+        error: null,
       };
     case DEBT_ERROR:
       return {

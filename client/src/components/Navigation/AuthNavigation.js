@@ -8,12 +8,15 @@ import {
   DropdownItem,
 } from 'reactstrap';
 import AuthContext from '../../context/auth/authContext';
+import DebtContext from '../../context/debts/debtContext';
 
 const AuthNavigation = () => {
   const { userLogout, user } = useContext(AuthContext);
+  const { clearDebts } = useContext(DebtContext);
 
   const onLogout = () => {
     userLogout();
+    clearDebts();
   };
 
   return (

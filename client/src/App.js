@@ -40,7 +40,7 @@ const App = () => {
                   component={UpdateDebtPage}
                 />
                 <Route exact path='/signup' component={RegisterPage} />
-                <Route exact path='/login' component={LoginPage} />
+                <Route exact path='/' component={LoginPage} />
               </Switch>
             </Container>
           </Router>

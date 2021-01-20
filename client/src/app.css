@@ -496,18 +496,12 @@ input:-internal-autofill-selected {
 }
 
 select option {
-  background-color: var(--gray-dark) !important;
+  background-color: var(--dark) !important;
   background-image: none !important;
 }
 
 option:focus {
   outline-color: var(--gray-dark) !important;
-}
-
-.dropdown-item:focus,
-.dropdown-item:hover {
-  background-color: var(--primary);
-  color: var(--lighter);
 }
 
 /*------------------------
@@ -521,6 +515,10 @@ option:focus {
 .card-title {
   padding: 1rem 1rem;
 }
+
+/*------------------------
+	Button styles overwrites 
+-------------------------*/
 
 .btn-primary {
   background-color: var(--primary);
@@ -536,5 +534,18 @@ option:focus {
   background-color: #f5365cb0;
   border-color: #f5365cb0;
   box-shadow: 0 0 0 0.25rem rgba(245, 54, 92, 0.5);
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+  background-color: var(--primary);
+  color: var(--lighter);
+}
+
+/*------------------------
+	Table styles overwrites 
+-------------------------*/
+.table {
+  color: var(--light);
 }
 /*# sourceMappingURL=black-dashboard-react.css.map */

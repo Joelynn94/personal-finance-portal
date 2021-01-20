@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Button, Table } from 'reactstrap';
 
 import debtsContext from '../../context/debts/debtContext';
 import Loader from '../Loader/Loader';
@@ -29,45 +30,53 @@ const Debts = () => {
   };
 
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Balance</th>
-            <th>Min Payment</th>
-            <th>Interest</th>
-            <th>Debt Type</th>
-            <th>Account Name</th>
-          </tr>
-        </thead>
-        {debts !== null && !loading ? (
-          <tbody>
-            {debts &&
-              debts.map((debt) => (
-                <tr key={debt.debt_id}>
-                  <td>{`$${debt.balance}`}</td>
-                  <td>{`$${debt.min_payment}`}</td>
-                  <td>{`${debt.interest_rate}%`}</td>
-                  <td>{debt.debt_type}</td>
-                  <td>{debt.account_name}</td>
-                  <td>
-                    <button onClick={() => handleUpdate(debt.debt_id)}>
-                      Update
-                    </button>
-                  </td>
-                  <td>
-                    <button onClick={() => handleDelete(debt.debt_id)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        ) : (
-          <Loader />
-        )}
-      </table>
-    </div>
+    <Table className='mt-5'>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Balance</th>
+          <th>Min Payment</th>
+          <th>Interest</th>
+          <th>Debt Type</th>
+          <th>Account Name</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      {debts !== null && !loading ? (
+        <tbody>
+          {debts &&
+            debts.map((debt) => (
+              <tr key={debt.debt_id}>
+                <td>{debt.debt_id}</td>
+                <td>{`$${debt.balance}`}</td>
+                <td>{`$${debt.min_payment}`}</td>
+                <td>{`${debt.interest_rate}%`}</td>
+                <td>{debt.debt_type}</td>
+                <td>{debt.account_name}</td>
+                <td>
+                  <Button
+                    color='warning'
+                    onClick={() => handleUpdate(debt.debt_id)}
+                  >
+                    Update
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    color='danger'
+                    onClick={() => handleDelete(debt.debt_id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      ) : (
+        <Loader />
+      )}
+    </Table>
   );
 };
 

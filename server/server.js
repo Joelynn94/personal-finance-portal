@@ -11,14 +11,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// use morgan
+app.use(morgan('tiny'));
 // setup the middleware to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 // this middleware creates the req.body object
 app.use(express.json());
 // use CORS
 app.use(cors());
-// use morgan
-morgan('tiny');
 // use static files
 app.use(express.static('public'));
 

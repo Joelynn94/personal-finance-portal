@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 // import NumberFormat from 'react-number-format';
 import debtsContext from '../../context/debts/debtContext';
 
@@ -54,10 +55,10 @@ const AddDebt = () => {
   };
 
   return (
-    <div>
-      <form action=''>
-        <label htmlFor='balance'>Balance Owed</label>
-        <input
+    <Form inline>
+      <FormGroup>
+        <Label htmlFor='balance'>Balance Owed</Label>
+        <Input
           type='text'
           pattern='[0-9]*'
           id='js-balance'
@@ -65,8 +66,10 @@ const AddDebt = () => {
           value={balance}
           onChange={(e) => onDebtNumberChange(e)}
         />
-        <label htmlFor='min_payment'>Minimum Payment</label>
-        <input
+      </FormGroup>
+      <FormGroup>
+        <Label htmlFor='min_payment'>Minimum Payment</Label>
+        <Input
           id='js-min_payment'
           type='text'
           pattern='[0-9]*'
@@ -74,8 +77,10 @@ const AddDebt = () => {
           value={min_payment}
           onChange={(e) => onDebtNumberChange(e)}
         />
-        <label htmlFor='interest_rate'>Interest Rate</label>
-        <input
+      </FormGroup>
+      <FormGroup>
+        <Label htmlFor='interest_rate'>Interest Rate</Label>
+        <Input
           id='js-interest_rate'
           type='text'
           pattern='[0-9]*'
@@ -83,32 +88,40 @@ const AddDebt = () => {
           value={interest_rate}
           onChange={(e) => onDebtNumberChange(e)}
         />
-        <label htmlFor='account_name'>Account Name</label>
-        <input
+      </FormGroup>
+      <FormGroup>
+        <Label htmlFor='account_name'>Account Name</Label>
+        <Input
           id='js-account_name'
           type='text'
           name='account_name'
           value={account_name}
           onChange={(e) => onDebtStringChange(e)}
         />
-        <label htmlFor='debt_type'>Debt Type</label>
-        <select
+      </FormGroup>
+      <FormGroup>
+        <Label htmlFor='debt_type'>Debt Type</Label>
+        <Input
+          type='select'
           id='js-debt_type'
           value={debt_type}
           name='debt_type'
           onChange={(e) => onDebtStringChange(e)}
         >
-          <option value='' selected>
-            Select a type
-          </option>
+          <option defaultValue>Select a type</option>
           <option value='Student Loan'>Student Loan</option>
           <option value='Credit Card'>Credit Card</option>
-        </select>
-        <button onClick={handleSubmit} type='submit'>
-          Add
-        </button>
-      </form>
-    </div>
+        </Input>
+      </FormGroup>
+      <Button
+        className='mt-3'
+        color='primary'
+        onClick={handleSubmit}
+        type='submit'
+      >
+        Add
+      </Button>
+    </Form>
   );
 };
 

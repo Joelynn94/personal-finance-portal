@@ -476,6 +476,10 @@ hr {
 	Form styles overrites 
 -------------------------*/
 
+.navbar-expand-md .navbar-collapse {
+  justify-content: flex-end;
+}
+
 .form-control {
   background-color: transparent;
   border-color: #2b3553;

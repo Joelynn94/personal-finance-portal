@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
 
 const debtRoutes = require('./routes/debtRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -10,6 +11,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// use morgan
+app.use(morgan('tiny'));
 // setup the middleware to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 // this middleware creates the req.body object

@@ -4,8 +4,7 @@ CREATE TABLE users
   user_id SERIAL NOT NULL PRIMARY KEY,
   user_name VARCHAR(100) NOT NULL CHECK(user_name <> ''),
   user_email VARCHAR(100) NOT NULL CHECK(user_email <> ''),
-  user_password VARCHAR(100) NOT NULL CHECK(user_password  <> ''),
-  isAdmin BOOLEAN NOT NULL DEFAULT FALSE
+  user_password VARCHAR(100) NOT NULL CHECK(user_password  <> '')
 );
 
 DROP TABLE IF EXISTS debts;
@@ -25,9 +24,9 @@ CREATE TABLE debts
 );
 
 INSERT INTO users
-  (user_name, user_email, user_password, isAdmin)
+  (user_name, user_email, user_password)
 VALUES
-  ('Joe Lynn', 'josephlynn@gmail.com', 'kite12345', true);
+  ('Joe Lynn', 'josephlynn@gmail.com', 'kite12345');
 
 
 INSERT INTO debts

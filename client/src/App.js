@@ -6,6 +6,7 @@ import DebtState from './context/debts/DebtState';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
 
+import HomePage from './views/HomePage';
 import Dashboard from './views/Dashboard';
 import DebtCalculator from './views/DebtCalculator';
 import UpdateDebtPage from './views/UpdateDebtPage';
@@ -33,14 +34,15 @@ const App = () => {
               <Alerts />
               <Switch>
                 <PrivateRoute exact path='/dashboard' component={Dashboard} />
-                <Route exact path='/debts' component={DebtCalculator} />
+                <PrivateRoute exact path='/debts' component={DebtCalculator} />
                 <Route
                   exact
                   path='/debts/:id/update'
                   component={UpdateDebtPage}
                 />
                 <Route exact path='/signup' component={RegisterPage} />
-                <Route exact path='/' component={LoginPage} />
+                <Route exact path='/login' component={LoginPage} />
+                <Route exact path='/' component={HomePage} />
               </Switch>
             </Container>
           </Router>
